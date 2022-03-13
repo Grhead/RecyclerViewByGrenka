@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,7 +31,19 @@ public class MainActivity extends AppCompatActivity {
             try {
                 URL newURL = new URL("https://http.cat/" + temp);
                 System.out.println(newURL);
-                cats.add(newURL);
+                LastThread lastThread = new LastThread();
+                lastThread.newURL = newURL;
+                lastThread.start();
+                lastThread.LastCallBack = new LastCallBack() {
+                    @Override
+                    public void BitLoader(Boolean BT) {
+                        if (lastThread.BT == true) {
+                            cats.add(newURL);
+                        } else {
+                            System.out.println("Does NOT EXIST" + newURL);
+                        }
+                    }
+                };
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
